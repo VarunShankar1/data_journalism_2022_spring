@@ -18,3 +18,21 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Introduction
 
 Consider this a personal guide to the commands and functions you will learn. In general, when you come across an R command or function that you want to remember, put it in here along with a description of what it does and when you'd use it.
+
+Jan. 27 Notes
+setwd is for setting directories
+```{r}
+setwd("~/Documents/GitHub/data_journalism_2022_spring")
+```
+
+Tidyverse is collection of libraries, opinionated R packages that are designed for dasa science
+
+installing packages 
+
+```{r}
+install.packages('tidyverse')
+```
+```{r}
+library(tidyverse)
+```
+need to do library command to get tidyverse loaded into file
