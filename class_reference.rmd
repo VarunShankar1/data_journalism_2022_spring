@@ -36,3 +36,15 @@ install.packages('tidyverse')
 library(tidyverse)
 ```
 need to do library command to get tidyverse loaded into file
+
+glimpse funciton gives you a view of a lot of the data
+head function gives first six data entries
+ppp_maryland_loans %>%
+  group_by(project_county_name) %>% ##groups by category
+  summarise(
+    count_loans = n(),
+    total_loans_amount = sum(amount) ##gives info about the number of loans by ammount
+  ) %>%
+  arrange(desc(total_loans_amount))
+this is asking the data a question: in this case it's what county has the most loan amounts
+  
