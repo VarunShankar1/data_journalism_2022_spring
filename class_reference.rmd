@@ -47,4 +47,7 @@ ppp_maryland_loans %>%
   ) %>%
   arrange(desc(total_loans_amount))
 this is asking the data a question: in this case it's what county has the most loan amounts
+
+to store data table
+arrange -> variablename
   
