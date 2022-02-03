@@ -53,4 +53,13 @@ arrange -> variablename
   this is not correct, check his lab 1 to find this
 
 Lubridate helps make process of dealing w data easier
+
+head and summary of data gives some overarching stats about each category
+colnames tell you all the column names
+glimpse let's you see col names and some of the actual data
+
+mutate adds column
+creates new data table with only values that have lender state in MD
+ymd_hms changes dates from chr to date format
+
   
