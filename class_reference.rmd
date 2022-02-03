@@ -50,4 +50,7 @@ this is asking the data a question: in this case it's what county has the most l
 
 to store data table
 arrange -> variablename
+  this is not correct, check his lab 1 to find this
+
+Lubridate helps make process of dealing w data easier
   
