@@ -80,7 +80,7 @@ notpaidout %>% group_by(lender) %>%
 
 **Q3** What are some potential reasons why a loan might not be paid out? What questions does that circumstance raise for you?
 **A3** [write your answer here]
-The fact that so many of these undisbursed loans come from one lender makes me think there's an issue with Davis Trust Company in particular and raises questions about whether the issue is on the people applying for the loans through Davis Trust (unlikely) or something about Davis Trust's process that's leading to 12 loans to not be paid off.
+The fact that so many of these undisbursed loans come from one lender makes me think there's an issue with Davis Trust Company in particular and raises questions about whether the issue is on the people applying for the loans through Davis Trust or something about Davis Trust's process that's leading to 12 loans to not be paid off.
 
 **Q4** Which month in 2021 had the most loans approved?
 **A4** [write your answer here]
