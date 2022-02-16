@@ -62,4 +62,13 @@ mutate adds column
 creates new data table with only values that have lender state in MD
 ymd_hms changes dates from chr to date format
 
+
+Filter mutate group by summarize arrange
+
+Make sure to mutate every time when working with dataframes
+
+estimates <- bind_rows(list(popestimate_2010, popestimate_2015, popestimate_2020))
+View(estimates)
+- binds dataframes with same colum structure together
+
   
