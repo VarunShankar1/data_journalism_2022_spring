@@ -59,9 +59,8 @@ In this notebook, we are reverse engineering five sentences from the story.
 ```{r}
 # Put code to reverse engineer sentence here
 # Display results of code below this codeblock
-Donors_list <- Donors_list %>% 
-  mutate(amount = as.numeric(parse_number(amount)))
-Donors_list %>% filter(name == "Cooper For North Carolina")
+nc_finance_data %>% 
+ filter(name == "Cooper For North Carolina")
 ```  
 
 
@@ -93,19 +92,15 @@ summarize(
 ```
 # Display results of code below this codeblock
 
-```
-
 ### Sentence 3
 
 Sentence text: [R.H. Barringer's board chair, Jasie Barringer, donated another $8,200 in-session, and Teresa Craig kicked in another $5,200 to Berger. The North Carolina Beer & Wine Wholesalers Association PAC gave $18,400 during the week before session and on opening day.]
-Analysis summary: [The problem with the data right now is that the amount row is not a number. The datatype will need to be changed before getting any accurate data. I could filter for those names specifically, but it would make it difficult to produce any meaningful oversations other than exactly what I am looking for. ]
+Analysis summary: [The problem with the data right now is that the amount row is not a number. The datatype will need to be changed before getting any accurate data. I could filter for those names specifically, but it would make it difficult to produce any meaningful obversations other than exactly what I am looking for. ]
 
 ```{r}
-# Put code to reverse engineer sentence here
 nc_finance_data %>% 
-  group_by(name.clean) %>%
+  group_by("name-clean") %>%
 arrange(desc(amount))
-# Display results of code below this codeblock
 ```
 
 
