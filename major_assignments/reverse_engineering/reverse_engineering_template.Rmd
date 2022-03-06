@@ -53,9 +53,16 @@ In this notebook, we are reverse engineering five sentences from the story.
 
 ### Sentence 1
 
-* **Sentence text**: 
+* **Sentence text**: “Gov. Roy Cooper's main campaign account brought in another $407,000 during session.”
+* **Analysis summary**: I tried filtering the data set using his main campaign account "Cooper for North Carolina" but the amount didn't match with the article's result.
 
-* **Analysis summary**:
+```{r}
+# Put code to reverse engineer sentence here
+# Display results of code below this codeblock
+Donors_list <- Donors_list %>% 
+  mutate(amount = as.numeric(parse_number(amount)))
+Donors_list %>% filter(name == "Cooper For North Carolina")
+```  
 
 
 ### Sentence 2
@@ -90,15 +97,17 @@ summarize(
 
 ### Sentence 3
 
-* **Sentence text**: [Paste in sentence to engineer here]
-* **Analysis summary**: [Write up two to three sentences describing the results of your analysis.  Were you able to confirm the finding? If not, why not?]
+Sentence text: [R.H. Barringer's board chair, Jasie Barringer, donated another $8,200 in-session, and Teresa Craig kicked in another $5,200 to Berger. The North Carolina Beer & Wine Wholesalers Association PAC gave $18,400 during the week before session and on opening day.]
+Analysis summary: [The problem with the data right now is that the amount row is not a number. The datatype will need to be changed before getting any accurate data. I could filter for those names specifically, but it would make it difficult to produce any meaningful oversations other than exactly what I am looking for. ]
 
 ```{r}
 # Put code to reverse engineer sentence here
-
+nc_finance_data %>% 
+  group_by(name.clean) %>%
+arrange(desc(amount))
 # Display results of code below this codeblock
-
 ```
+
 
 ### Sentence 4
 
