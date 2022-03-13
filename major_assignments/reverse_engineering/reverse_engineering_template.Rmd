@@ -42,10 +42,10 @@ In this section, describe the source of the data, write a basic data dictionary 
 # Path to data should be loaded from folder "data" i.e. read_csv("data/name_of_data.csv")
 
 # Clean required data and prepare for analysis if needed. 
+
+
 nc_finance_data <- read_csv("data/donors0103-0701.csv")
-nc_finance_data <- nc_finance_data %>%
-  mutate(date = as.Date(date)) %>% 
-  mutate(amount = as.numeric(parse_number(amount)))
+nc_finance_data <- nc_finance_data %>% mutate(date = mdy(date)) %>% mutate(amount = as.numeric(parse_number(amount)))
 ```
 
 ## Sentences to Engineer
@@ -68,16 +68,20 @@ nc_finance_data %>%
 
 * **Sentence text**: “Berger, R-Rockingham, brought in about $60,000 that week. House Speaker Tim Moore's campaign account collected more than $72,000. Both men declined interview requests on these issues.”
 
-* **Analysis summary**: I tried to confirm the values found here but ran into a couple of issues. The first was the time-frame, which I think is 1/3 to 1/10 but I'm not sure. The second is knowing where all the donations are going, it's hard to see if I'm catching all of Berger/Moore's donations.
+* **Analysis summary**: I was able to recreate both these values by using the right date frame and date format.
 ```{r}
 # Put code to reverse engineer sentence here
 berger_donations <- nc_finance_data %>%  
-  filter(date >= "0001-03-18" & date <= "0001-10-18" & committee_name == "PHILIP E BERGER COMM") 
+  filter(date >= '2018-05-09' & date <= '2018-05-16' & committee_name == "PHILIP E BERGER COMM") 
 
 berger_donations %>% 
-summarize(
-      total_loans_amount = sum(amount)
-) 
+summarize(total_loans_amount = sum(amount))
+
+moore_donations <- nc_finance_data %>%  
+  filter(date >= '2018-05-09' & date <= '2018-05-16' & committee_name == "FRIENDS OF TIM MOORE") 
+
+moore_donations %>% 
+summarize(total_loans_amount = sum(amount))
 ```
 
 ```{r}
