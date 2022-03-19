@@ -67,7 +67,6 @@ ppp_removed <- read_rds("data/lab_08.rds")
 Baltimore City is the Maryland jurisdiction with the lowest median age of 19.0.
 ```{r}
 md_median_age <- get_acs(geography="county", variables = "B01002_001", state='MD')
-
 ```
 
 **Q2** Which Maryland counties have a median age of at least 50? Write code to isolate just those jurisdictions.
@@ -121,10 +120,10 @@ black_percent <- black_pop %>%
     select(-variable.x, moe.x, -variable.y, moe.y) %>%  
     arrange(desc(percentage))
 
-removed_loans <- ppp_removed %>%
+ppp_removed <- ppp_removed %>%
   mutate(zip5 = str_sub(zip, 1, 5)) 
 
-top_zips <- removed_loans %>%
+top_zips <- ppp_removed %>%
  group_by(zip5) %>%
  summarise(total=sum(amount)) %>%
  arrange(desc(total))
