@@ -122,12 +122,24 @@ arrange(desc(amount))
 
 ### Sentence 5
 
-* **Sentence text**: [Paste in sentence to engineer here]
-* **Analysis summary**: [Write up two to three sentences describing the results of your analysis.  Were you able to confirm the finding? If not, why not?]
+* **Sentence text**: Senate President Pro Tem Phil Berger's campaign alone raised nearly $222,000 during session. Twenty-three people gave him the maximum allowed: $5,200.”
 
+* **Analysis summary**: By filtering by the date and the committee and then summarizing the total amount of donations, I was able to confirm Berger got just under 222k in donations during the session. 
+I then did the same but also added another filter requirement, that the amount donated was the maximum allowed of 5200, and I got 23 results, confirming what the story said.
+
+May 16 to June 29
 ```{r}
 # Put code to reverse engineer sentence here
+berger_donations <- nc_finance_data %>%  
+  filter(date >= '2018-05-16' & date <= '2018-06-29' & committee_name == "PHILIP E BERGER COMM") 
 
+berger_donations %>% 
+summarize(total_loans_amount = sum(amount))
+
+berger_max_donations <- nc_finance_data %>%  
+  filter(date >= '2018-05-16' & date <= '2018-06-29' & committee_name == "PHILIP E BERGER COMM" & amount == 5200) 
+
+berger_max_donations
 # Display results of code below this codeblock
 
 ```
