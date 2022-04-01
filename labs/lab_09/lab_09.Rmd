@@ -114,6 +114,8 @@ per100k_ppp %>%
   )
 
 ```
+The top ten states are South Dakota, North Dakota, Nebraska, Georgia, Iowa, Illinois, Louisiana, Florida, Mississippi, and Montana.
+
 
 **Q3.**  A scatterplot is a type of chart that helps us see relationships between two variables. One variable goes on the x axis, the other on the y axis.  For each row/observation in our data, a scatterplot puts a circle (or a "point") where the two variables intersect on a grid. 
 
@@ -136,6 +138,16 @@ To answer those questions, make a codeblock and do the following:
 5. In the answer space below, describe what you see and answer the questions posed above.  In a general sense, what do you think this means?  
 
 **A3.**  
+I see a cluster of points approximating a line that looks like it has a slope of one. I also see another cluster of points that are approximating a line that is horizontal at forgivness amount = 0. This indicates that most people who are getting loans are either getting the whole thing forgiven or none of it forgiven.
+```{r}
+wv_under25k_ppp_data <- read_rds("data/lab_09.rds") %>% 
+  filter(amount < 25000)
+  
+wv_under25k_ppp_data[["forgiveness_amount"]][is.na(wv_under25k_ppp_data[["forgiveness_amount"]])] <- 0
+# Basic scatter plot
 
+ggplot(wv_under25k_ppp_data, aes(x = amount, y = forgiveness_amount)) +
+    geom_point(size = 1)
 
+```
 -30-
