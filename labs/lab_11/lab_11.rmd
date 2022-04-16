@@ -98,7 +98,22 @@ Here's the url: https://tagis.dep.wv.gov/arcgis/rest/services/WVDEP_enterprise/m
 
 (It's in a slightly different format than the .shp file in the lab. It's another type of shapefile called "geojson".  It will work just the same, though, despite that difference. You can read it directly into R without manually downloading it, by putting the url in the st_read() function we learned about in this week's prelab.)
 
+```{r}
+mine_permits <- st_read("https://tagis.dep.wv.gov/arcgis/rest/services/WVDEP_enterprise/mining_reclamation/MapServer/0/query?where=1%3D1&outFields=*&geometry=&geometryType=esriGeometryEnvelope&inSR=4326&spatialRel=esriSpatialRelIntersects&outSR=4326&f=json") %>% 
+  filter(expiredate > "2021/09/01")
 
+
+counties <- counties()
+
+wv_counties <- counties %>%
+  filter(STATEFP == "54")
+
+ggplot() + 
+  geom_sf(data=wv_counties) + 
+  geom_sf(data=mine_permits) +
+  
+  theme_minimal()
+```
 
 This data includes both currently operating mines and old ones that have closed.  You want to examine only mines that have a permit expiration date after Sept. 1, 2021.
 
@@ -106,11 +121,24 @@ Make a map with a point for each one of these mine permits and put a blank map w
 
 What spatial pattern do you see? How does it compare to the spatial pattern in the first map you made?
 
+
 **A2.**
+The mines are heavily concentrated in the southwest. Some counties are heavily populated, those are also ones that had lots of PPP loans per 100K.
+
+
 
 **Q3.** To confirm the spatial comparison you identified in question 2, let's create a new map that layers the mine location points on top of our PPP choropleth map we created in question 1. What do you notice about the number of mines in the county that has the highest total loan amount per 100K?
 
 **A3.**
+It is a very small county but it has three mines which is more than many counties of a similar size.
+```{r}
+
+ggplot() + 
+  geom_sf(data=wv_loans_per_100k, aes(fill=loans_per_100k)) + 
+  theme_minimal() +
+  scale_fill_viridis_b(option="magma",trans = "log") +
+  geom_sf(data=mine_permits) 
+```
 
 **Q4.** Starting from the original WV ppp dataframe, examine the loans to companies in "Mining, Quarrying, and Oil and Gas Extraction" in the county with the highest total loan amount per 100K (you can use the table you created in question 1 to identify the top county).
 
@@ -120,4 +148,20 @@ What spatial pattern do you see? How does it compare to the spatial pattern in t
 * What's your hypothesis for why a company in their specific industry would need to seek a PPP loan during the pandemic?
 
 **A4.**
+```{r}
+wv_ohio_county_loans <- wv_ppp_slice %>% 
+  filter(project_county_name == "OHIO") %>% 
+  group_by(name) %>%
+  summarise(total=sum(amount), count=n()) %>%
+  arrange(desc(total))
+
+hlc_loan <- wv_ppp_slice %>% 
+  filter(name == "HLC HOLDINGS, INC.") 
+```
+
+The highest company with the bigest chunk of the total loan amount was HLC HOLDINGS, INC.Their NAICS code of 327110 is an industry that works with plumbing fixtures and electric supplies made out of clay and other ceramtic materials along with pottery and ceramics. They saved 500 jobs. 
+
+
+This company could've needed these supplies because less plumbers and electricians were let into others houses due to COVID-19. There was also likely a drop in the need for ceramics as people's incomes dropped. 
+
 -30-
