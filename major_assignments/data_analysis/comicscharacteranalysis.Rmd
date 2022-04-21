@@ -125,5 +125,23 @@ marvel_data_lgbt_hair <- marvel_data_lgbt %>%
         
       )
   ) 
-
+```
+What percentage of LGBT comic characters get more than 1 appearance: Over 92 percent of LGBT comic characters get 
+```{r}
+lgbt_dc_characters_overoneapp <- dc_data_lgbt %>% 
+    filter(lgbt_or_not == "LGBT" & APPEARANCES > 1)
+lgbt_marvel_characters_overoneapp <- marvel_data_lgbt %>% 
+    filter(lgbt_or_not == "LGBT" & APPEARANCES > 1)
+ lgbt_dc_characters <- dc_data_lgbt %>% 
+    filter(lgbt_or_not == "LGBT")
+ lgbt_marvel_characters <- marvel_data_lgbt %>% 
+    filter(lgbt_or_not == "LGBT")
+ dclgbtcount = count(lgbt_dc_characters)
+ dclgbtcountoveroneapp = count(lgbt_dc_characters_overoneapp)
+ marvellgbtcount = count(lgbt_marvel_characters)
+ marvellgbtcountoveroneapp = count(lgbt_marvel_characters_overoneapp)
+ 
+ 
+ ((dclgbtcountoveroneapp+marvellgbtcountoveroneapp)/(marvellgbtcount+dclgbtcount))*100
+             
 ```
