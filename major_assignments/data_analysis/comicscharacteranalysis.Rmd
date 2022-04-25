@@ -38,7 +38,8 @@ The marvel_data dataset consists of 16,376 rows and 13 columns of data on Marvel
 
 glimpse(marvel_data)
 
-marvel_data %>% filter (! is.na (GSM))
+marvel_data <- marvel_data %>% 
+  filter (! is.na (GSM))
 
 ```
 
@@ -50,7 +51,8 @@ The dc_data dataset consists of 6,896 rows and 13 columns of data on DC comic ch
 
 glimpse(dc_data)
 
-dc_data %>% filter (! is.na (GSM))
+dc_data <-dc_data %>% 
+  filter (! is.na (GSM))
 
 
 ```
