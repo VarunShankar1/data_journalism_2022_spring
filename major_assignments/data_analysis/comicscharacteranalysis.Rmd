@@ -119,7 +119,7 @@ marvel_data_lgbt_hair <- marvel_data_lgbt %>%
         HAIR == 'Platinum Blond Hair' ~ "NEUTRAL", 
         HAIR == 'Purple Hair' ~ "Not",
         HAIR == 'Red Hair' ~ "Not",
-        HAIR == 'Reddish Brown Hair' ~ "Neutral",
+        HAIR == 'Reddish Brown Hair' ~ "NEUTRAL",
           HAIR == 'Silver Hair' ~ "Not", 
         HAIR == 'Strawberry Blond Hair' ~ "NEUTRAL",
         HAIR == 'Violet Hair' ~ "Not",
@@ -195,8 +195,13 @@ marvellgbtcountalive = count(marvel_lgbt_alive)
 
 Question 5: What percentage of LGBT characters have neutral hair colors? 
 ```{r}
+neutral_marvel_data_lgbt_hair    <-marvel_data_lgbt_hair %>% 
+  filter(neutral_hair_or_not == "NEUTRAL")  
+neutral_dc_data_lgbt_hair    <-dc_data_lgbt_hair %>% 
+  filter(neutral_hair_or_not == "NEUTRAL")  
 
+marvelneutralhaircount = count(neutral_marvel_data_lgbt_hair)
+dcneutralhaircount = count(neutral_dc_data_lgbt_hair)
 
-
-
+(marvelneutralhaircount+dcneutralhaircount)/(marvellgbtcount+dclgbtcount)
 ``` 
