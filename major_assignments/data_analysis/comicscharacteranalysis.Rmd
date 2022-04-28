@@ -38,8 +38,13 @@ The marvel_data dataset consists of 16,376 rows and 13 columns of data on Marvel
 
 glimpse(marvel_data)
 
-marvel_data <- marvel_data %>% 
-  filter (! is.na (GSM))
+marvel_data_lgbt <- marvel_data %>% 
+  filter (! is.na (GSM)) %>% 
+  clean_names()
+
+marvel_data_no_lgbt <- marvel_data %>% 
+  filter (is.na (GSM)) %>% 
+  clean_names()
 
 ```
 
@@ -51,22 +56,22 @@ The dc_data dataset consists of 6,896 rows and 13 columns of data on DC comic ch
 
 glimpse(dc_data)
 
-dc_data <-dc_data %>% 
-  filter (! is.na (GSM))
+dc_data_lgbt <-dc_data %>% 
+  filter (! is.na (GSM)) %>% 
+    clean_names()
+
+dc_data_no_lgbt <-dc_data %>% 
+  filter (is.na (GSM)) %>% 
+    clean_names()
 
 
+total_lgbt <- rbind(dc_data_lgbt, marvel_data_lgbt)
+total_non_lgbt <- rbind(dc_data_no_lgbt, marvel_data_no_lgbt)
 ```
+
 ```{r}
 # Create an if/else statement to create new columns that group characters into LGBT or not, and neutral color hair or not.
 
-dc_data_lgbt <- dc_data %>%  
-mutate(
-    lgbt_or_not = case_when(
-        GSM == 'Bisexual Characters' ~ "LGBT",
-        GSM == 'Homosexual Characters' ~ "LGBT",
-      )
-  ) %>% 
-  mutate(lgbt_or_not = replace_na(lgbt_or_not, "Not LGBT"))
 dc_data_lgbt_hair <- dc_data_lgbt %>% 
   mutate(
     neutral_hair_or_not = case_when(
@@ -84,7 +89,7 @@ dc_data_lgbt_hair <- dc_data_lgbt %>%
         HAIR == 'Platinum Blond Hair' ~ "NEUTRAL", 
         HAIR == 'Purple Hair' ~ "Not",
         HAIR == 'Red Hair' ~ "Not",
-        HAIR == 'Reddish Brown Hair' ~ "Neutral",
+        HAIR == 'Reddish Brown Hair' ~ "NEUTRAL",
           HAIR == 'Silver Hair' ~ "Not", 
         HAIR == 'Strawberry Blond Hair' ~ "NEUTRAL",
         HAIR == 'Violet Hair' ~ "Not",
@@ -93,15 +98,7 @@ dc_data_lgbt_hair <- dc_data_lgbt %>%
       )
   ) 
 
-## Same thing for Marvel Data
-marvel_data_lgbt <- marvel_data %>%  
-mutate(
-    lgbt_or_not = case_when(
-        GSM == 'Bisexual Characters' ~ "LGBT",
-        GSM == 'Homosexual Characters' ~ "LGBT",
-      )
-  ) %>% 
-  mutate(lgbt_or_not = replace_na(lgbt_or_not, "Not LGBT"))
+
 marvel_data_lgbt_hair <- marvel_data_lgbt %>% 
   mutate(
     neutral_hair_or_not = case_when(
@@ -133,20 +130,18 @@ Question 1: What percentage of LGBT comic characters get more than 1 appearance 
 
 ```{r}
 lgbt_dc_characters_overoneapp <- dc_data_lgbt %>% 
-    filter(lgbt_or_not == "LGBT" & APPEARANCES > 1)
+    filter(APPEARANCES > 1)
 lgbt_marvel_characters_overoneapp <- marvel_data_lgbt %>% 
-    filter(lgbt_or_not == "LGBT" & APPEARANCES > 1)
- lgbt_dc_characters <- dc_data_lgbt %>% 
-    filter(lgbt_or_not == "LGBT")
- lgbt_marvel_characters <- marvel_data_lgbt %>% 
-    filter(lgbt_or_not == "LGBT")
- dclgbtcount = count(lgbt_dc_characters)
+    filter(APPEARANCES > 1)
+ dclgbtcount = count(dc_data_lgbt)
  dclgbtcountoveroneapp = count(lgbt_dc_characters_overoneapp)
  marvellgbtcount = count(lgbt_marvel_characters)
- marvellgbtcountoveroneapp = count(lgbt_marvel_characters_overoneapp)
+ marvellgbtcountoveroneapp = count(marvel_data_lgbt)
  
  
  ((dclgbtcountoveroneapp+marvellgbtcountoveroneapp)/(marvellgbtcount+dclgbtcount))*100
+ 
+ 
              
 ```
 
