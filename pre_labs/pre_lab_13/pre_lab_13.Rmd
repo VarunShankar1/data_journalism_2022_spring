@@ -124,7 +124,7 @@ The relationship between businesses in a state receiving ppe and the state's Tru
 ### Task 6: Correlate data
 **Task** Run the following code. Describe the model output. What do you see?
 **Answer**
-It does a T-test, finding the t value along with the degrees of freedom along with the p-value. 
+It does a T-test, finding the t value along with the degrees of freedom along with the p-value. There is also a 95 percent confidence interval. It gives us a correlation value of .521. The low p value should mean you reject the null hypothesis and that data supports the alternative hypothesis.
 ```{r}
 
 cor.test(reveal_data$pct_trump, reveal_data$businesses_receiving_ppe_pct)
@@ -138,6 +138,7 @@ Now let's test the other one, the relationship between the pct_trump and the ppe
 ### Task 7: Correlate data
 **Task** Run the following code. Describe the model output. What do you see?
 **Answer**
+Similar to above, however this time the p value is higher meaning you don't reject the null hypothesis. The R value is lower here.
 ```{r}
 
 cor.test(reveal_data$pct_trump, reveal_data$ppe_amount_per_employee)
@@ -164,6 +165,7 @@ We could just calculate the averages like we're used to doing.
 ### Task 8: Average data
 **Task** Run the following code. Describe the table. What do you see?
 **Answer**
+AVerage ppp amount per employee for clinton and trump voting states, and mean business receiving ppe amount for Clinton and Trump voting states
 ```{r}
 reveal_data %>%
   group_by(vote_2016) %>%
@@ -192,6 +194,7 @@ Let's try the percentage of businesses getting ppp loans.
 ### Task 10: Run t-test
 **Task** Run the following code. Describe the output. What do you see?
 **Answer**
+p value is lower than .05, so this shows that the true difference in means between Trump and Clinton is different, such as the alternative hypothesis says. 
 ```{r}
 t.test(businesses_receiving_ppe_pct ~ vote_2016, data = reveal_data)
 ```
