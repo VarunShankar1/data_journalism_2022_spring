@@ -60,10 +60,17 @@ wv_police_incidents <- wv_police_incidents %>%
 
 latest_date <- wv_police_incidents %>% slice(1)
 
-last_30_days <- wv_police_incidents %>% filter(date >= latest_date$date - 30)
+last_30_days <- wv_police_incidents %>% filter(date >= latest_date$date - 30 & title == latest_date$title)
+count = count(last_30_days)
 
 ```
 
+```{r}
+sub <- paste("Since",format(latest_date$date, format="%B %d"), "there have been", count, str_to_lower(latest_date$title), "in the last 30 days")
+
+sub
+```
+I could also ask this data about what kinds of crimes are most common in certain time frames across multiple years.
 **Q2.** Maryland produces a [CSV file](https://raw.githubusercontent.com/state-of-maryland/VaccineCSVs/master/Vax_ZIP_CODE_FirstSecondSingle_Totals_Raw.csv) showing the total number of vaccinations by zip code and -- interestingly -- it includes non-Maryland zip codes (as well as some zip codes that seem to be bad data). write a script that reads the CSV file, making the columns more readable and adding today's date. Then output the top 25 Maryland zip codes and top 25 non-Maryland zip codes based on number of people fully vaccinated, and write both dataframes out to CSV files, using the following name formats:
 
 Maryland zips: maryland_zips_yyyymmdd.csv
@@ -80,8 +87,27 @@ To do that, you will need to:
 Google the top 2-3 zip codes from both Maryland and non-Maryland results and describe them in your answer.
 
 **A2.**
-
+Maryland's top zip codes are 20906, 20878, and 20874 in Montgomery County. The top non-Maryland zip codes are 20011, 20002, and 2009, all in Washington DC.
 ```{r}
+marylandzips <- read_csv("https://raw.githubusercontent.com/state-of-maryland/VaccineCSVs/master/Vax_ZIP_CODE_FirstSecondSingle_Totals_Raw.csv")%>%
+  clean_names() %>% 
+  filter(!is.na(fully_vaccinated)) %>% 
+  filter(nchar(zip_code)==5) %>% 
+  filter(zip_code >= 20588 & zip_code <= 21930) %>% 
+  mutate(todaysdate=Sys.Date()) %>% 
+  arrange(desc(fully_vaccinated))
+
+nonmarylandzips <- read_csv("https://raw.githubusercontent.com/state-of-maryland/VaccineCSVs/master/Vax_ZIP_CODE_FirstSecondSingle_Totals_Raw.csv")%>%
+  clean_names() %>% 
+  filter(!is.na(fully_vaccinated)) %>% 
+  filter(nchar(zip_code)==5) %>% 
+  filter(zip_code < 20588 | zip_code > 21930) %>% 
+  mutate(todaysdate=Sys.Date()) %>% 
+  arrange(desc(fully_vaccinated))
+
+
+write.csv(marylandzips,"maryland_zips_yyyymmdd.csv")
+write.csv(nonmarylandzips,"non_maryland_zips_yyyymmdd.csv")
 ```
 
 **Q3.** Maryland has had one of the more successful vaccination rates, but you want to understand where a significant portion of the population remains less than fully vaccinated. Make a dataframe of all Maryland zip codes from the vaccination data you used in Q2 and join it to Maryland zip code population data from the Census API. Calculate the percentage of fully vaccinated for each zip code and then make a map showing the zip codes with less than 50 percent fully vaccinated. Put a blank map with the outline of Maryland counties (which you can get from Tigris) behind it for context. Add a label to the map describing what the data is and include the date from the vaccination data (programmatically, so you can run it every day).
@@ -91,6 +117,24 @@ You WILL need to ensure that the columns you use to join the two dataframes are 
 Describe the output of the map below, and say what you think the most interesting areas are.
 
 **A3.**
-
+The map shows that there's low vaccinated areas in the edges of the state. However, the most interesting area for me are the small zip codes in the center of the county that have very very low vaccination rates 
 ```{r}
+md_zip_population <- get_acs(geography = "zcta", 
+              variables = c(population = "B01001_001"), 
+              state = "MD",
+              geometry = TRUE)
+md_zip_population <- md_zip_population %>% 
+  mutate(GEOID = as.numeric(GEOID))
+
+maryland_vax_pop_zip_data <- marylandzips %>%
+    inner_join(md_zip_population, by=c("zip_code" = "GEOID"))  
+
+maryland_vax_pop_zip_data <- maryland_vax_pop_zip_data %>% 
+    rename(population=estimate) %>%
+    mutate(vaxxedpercentage=(fully_vaccinated/population)*100) %>% 
+    filter(vaxxedpercentage < 50)
+
+ggplot() +
+  geom_sf(data=md_zip_population) +geom_sf(data=maryland_vax_pop_zip_data, aes(fill=vaxxedpercentage,   geometry=geometry)) +scale_fill_viridis_c(option = "plasma", trans = "sqrt") +
+  theme_void()
 ```
