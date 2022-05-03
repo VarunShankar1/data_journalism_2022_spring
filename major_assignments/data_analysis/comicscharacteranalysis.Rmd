@@ -72,55 +72,28 @@ total_non_lgbt <- rbind(dc_data_no_lgbt, marvel_data_no_lgbt)
 ```{r}
 # Create an if/else statement to create new columns that group characters into LGBT or not, and neutral color hair or not.
 
-dc_data_lgbt_hair <- dc_data_lgbt %>% 
+total_lgbt_hair <- total_lgbt %>% 
   mutate(
     neutral_hair_or_not = case_when(
-        HAIR == 'Black Hair' ~ "NEUTRAL",
-        HAIR == 'Blond Hair' ~ "NEUTRAL",
-        HAIR == 'Brown Hair' ~ "NEUTRAL",
-        HAIR == 'Auburn Hair' ~ "NEUTRAL", 
-        HAIR == 'Bald' ~ "NEUTRAL",
-        HAIR == 'Green Hair' ~ "Not",
-        HAIR == 'Blue Hair' ~ "Not",
-        HAIR == 'Gold Hair' ~ "Not", 
-        HAIR == 'Grey Hair' ~ "NEUTRAL",
-        HAIR == 'Orange Hair' ~ "Not",
-        HAIR == 'Pink Hair' ~ "Not",
-        HAIR == 'Platinum Blond Hair' ~ "NEUTRAL", 
-        HAIR == 'Purple Hair' ~ "Not",
-        HAIR == 'Red Hair' ~ "Not",
-        HAIR == 'Reddish Brown Hair' ~ "NEUTRAL",
-          HAIR == 'Silver Hair' ~ "Not", 
-        HAIR == 'Strawberry Blond Hair' ~ "NEUTRAL",
-        HAIR == 'Violet Hair' ~ "Not",
-        HAIR == 'White Hair' ~ "Not",
-        
-      )
-  ) 
-
-
-marvel_data_lgbt_hair <- marvel_data_lgbt %>% 
-  mutate(
-    neutral_hair_or_not = case_when(
-        HAIR == 'Black Hair' ~ "NEUTRAL",
-        HAIR == 'Blond Hair' ~ "NEUTRAL",
-        HAIR == 'Brown Hair' ~ "NEUTRAL",
-        HAIR == 'Auburn Hair' ~ "NEUTRAL", 
-        HAIR == 'Bald' ~ "NEUTRAL",
-        HAIR == 'Green Hair' ~ "Not",
-        HAIR == 'Blue Hair' ~ "Not",
-        HAIR == 'Gold Hair' ~ "Not", 
-        HAIR == 'Grey Hair' ~ "NEUTRAL",
-        HAIR == 'Orange Hair' ~ "Not",
-        HAIR == 'Pink Hair' ~ "Not",
-        HAIR == 'Platinum Blond Hair' ~ "NEUTRAL", 
-        HAIR == 'Purple Hair' ~ "Not",
-        HAIR == 'Red Hair' ~ "Not",
-        HAIR == 'Reddish Brown Hair' ~ "NEUTRAL",
-          HAIR == 'Silver Hair' ~ "Not", 
-        HAIR == 'Strawberry Blond Hair' ~ "NEUTRAL",
-        HAIR == 'Violet Hair' ~ "Not",
-        HAIR == 'White Hair' ~ "Not",
+        hair == 'Black Hair' ~ "NEUTRAL",
+        hair == 'Blond Hair' ~ "NEUTRAL",
+        hair == 'Brown Hair' ~ "NEUTRAL",
+        hair == 'Auburn Hair' ~ "NEUTRAL", 
+        hair == 'Bald' ~ "NEUTRAL",
+        hair == 'Green Hair' ~ "Not",
+        hair == 'Blue Hair' ~ "Not",
+        hair == 'Gold Hair' ~ "Not", 
+        hair == 'Grey Hair' ~ "NEUTRAL",
+        hair == 'Orange Hair' ~ "Not",
+        hair == 'Pink Hair' ~ "Not",
+        hair == 'Platinum Blond Hair' ~ "NEUTRAL", 
+        hair == 'Purple Hair' ~ "Not",
+        hair == 'Red Hair' ~ "Not",
+        hair == 'Reddish Brown Hair' ~ "NEUTRAL",
+        hair == 'Silver Hair' ~ "Not", 
+        hair == 'Strawberry Blond Hair' ~ "NEUTRAL",
+        hair == 'Violet Hair' ~ "Not",
+        hair == 'White Hair' ~ "Not",
         
       )
   ) 
@@ -129,20 +102,18 @@ marvel_data_lgbt_hair <- marvel_data_lgbt %>%
 Question 1: What percentage of LGBT comic characters get more than 1 appearance and average appearances?
 
 ```{r}
-lgbt_dc_characters_overoneapp <- dc_data_lgbt %>% 
-    filter(APPEARANCES > 1)
-lgbt_marvel_characters_overoneapp <- marvel_data_lgbt %>% 
-    filter(APPEARANCES > 1)
- dclgbtcount = count(dc_data_lgbt)
- dclgbtcountoveroneapp = count(lgbt_dc_characters_overoneapp)
- marvellgbtcount = count(lgbt_marvel_characters)
- marvellgbtcountoveroneapp = count(marvel_data_lgbt)
+lgbt_characters_overoneapp <- total_lgbt %>% 
+    filter(appearances > 1)
+nonlgbt_total_characters_overoneapp <- total_non_lgbt %>% 
+    filter(appearances > 1)
+ totallgbtcount = count(total_lgbt)
+ lgbtcountoveroneapp = count(lgbt_characters_overoneapp)
  
+(lgbtcountoveroneapp/totallgbtcount)*100
  
- ((dclgbtcountoveroneapp+marvellgbtcountoveroneapp)/(marvellgbtcount+dclgbtcount))*100
- 
- 
-             
+lgbt_app_mean <- mean(total_lgbt$appearances, na.rm = TRUE)
+nonlgbt_app_mean <- mean(total_non_lgbt$appearances, na.rm = TRUE)
+
 ```
 
 Question 2: What's the alignment of LGBT comic characters?
