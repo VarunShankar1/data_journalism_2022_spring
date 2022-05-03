@@ -98,6 +98,32 @@ total_lgbt_hair <- total_lgbt %>%
       )
   ) 
 
+total_nonlgbt_hair <- total_non_lgbt %>% 
+  mutate(
+    neutral_hair_or_not = case_when(
+        hair == 'Black Hair' ~ "NEUTRAL",
+        hair == 'Blond Hair' ~ "NEUTRAL",
+        hair == 'Brown Hair' ~ "NEUTRAL",
+        hair == 'Auburn Hair' ~ "NEUTRAL", 
+        hair == 'Bald' ~ "NEUTRAL",
+        hair == 'Green Hair' ~ "Not",
+        hair == 'Blue Hair' ~ "Not",
+        hair == 'Gold Hair' ~ "Not", 
+        hair == 'Grey Hair' ~ "NEUTRAL",
+        hair == 'Orange Hair' ~ "Not",
+        hair == 'Pink Hair' ~ "Not",
+        hair == 'Platinum Blond Hair' ~ "NEUTRAL", 
+        hair == 'Purple Hair' ~ "Not",
+        hair == 'Red Hair' ~ "Not",
+        hair == 'Reddish Brown Hair' ~ "NEUTRAL",
+        hair == 'Silver Hair' ~ "Not", 
+        hair == 'Strawberry Blond Hair' ~ "NEUTRAL",
+        hair == 'Violet Hair' ~ "Not",
+        hair == 'White Hair' ~ "Not",
+        
+      )
+  ) 
+
 ```
 Question 1: What percentage of LGBT comic characters get more than 1 appearance and average appearances?
 
@@ -106,11 +132,11 @@ lgbt_characters_overoneapp <- total_lgbt %>%
     filter(appearances > 1)
 nonlgbt_total_characters_overoneapp <- total_non_lgbt %>% 
     filter(appearances > 1)
- totallgbtcount = count(total_lgbt)
- lgbtcountoveroneapp = count(lgbt_characters_overoneapp)
- 
-(lgbtcountoveroneapp/totallgbtcount)*100
- 
+
+
+lgbt_over_one_app_percent <- (count(lgbt_characters_overoneapp)/count(total_lgbt))*100
+non_lgbt_over_one_app_percent <- (count(nonlgbt_total_characters_overoneapp)/count(total_non_lgbt))*100
+
 lgbt_app_mean <- mean(total_lgbt$appearances, na.rm = TRUE)
 nonlgbt_app_mean <- mean(total_non_lgbt$appearances, na.rm = TRUE)
 
@@ -161,13 +187,13 @@ marvellgbtcountalive = count(marvel_lgbt_alive)
 
 Question 5: What percentage of LGBT characters have neutral hair colors? 
 ```{r}
-neutral_marvel_data_lgbt_hair    <-marvel_data_lgbt_hair %>% 
-  filter(neutral_hair_or_not == "NEUTRAL")  
-neutral_dc_data_lgbt_hair    <-dc_data_lgbt_hair %>% 
-  filter(neutral_hair_or_not == "NEUTRAL")  
 
-marvelneutralhaircount = count(neutral_marvel_data_lgbt_hair)
-dcneutralhaircount = count(neutral_dc_data_lgbt_hair)
+neutral_hair_lgbt <- total_lgbt_hair %>%  
+  filter(neutral_hair_or_not == "NEUTRAL")  
+neutral_hair_lgbt_percentage <- (count(neutral_hair_lgbt)/count(total_lgbt_hair))
 
-(marvelneutralhaircount+dcneutralhaircount)/(marvellgbtcount+dclgbtcount)
+neutral_hair_non_lgbt <- total_nonlgbt_hair %>% 
+   filter(neutral_hair_or_not == "NEUTRAL")  
+
+neutral_hair_nonlgbt_percentage <- (count(neutral_hair_non_lgbt)/count(total_nonlgbt_hair))
 ``` 
