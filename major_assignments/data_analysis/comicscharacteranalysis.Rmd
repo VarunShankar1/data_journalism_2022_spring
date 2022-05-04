@@ -126,6 +126,10 @@ total_nonlgbt_hair <- total_non_lgbt %>%
 
 ```
 Question 1: What percentage of LGBT comic characters get more than 1 appearance and average appearances?
+LGBT characters - average 74.677 appearance and 92.85714 get above 1 appearance
+Non LGBT characters - average 18.626 appearances and 68.6305 get above 1 appearance.
+
+We wanted to see if LGBT characters were recurring characters or were just brought on for one-offs/minor roles. What we found was that over 92 percent of LGBT characters got over one appearance, compared to just over 68 percent for non-LGBT characters. We also found that LGBT characters averaged over 74 appearances compared to over 18 for non-LGBT characters. This means they were more likely to get more than one appearance that they averaged more appearances. Part of this can be attributed to small sample sizes, there are just 154 LGBT characters and 23118 non-LGBT characters. Many are also newer characters, meaning that the way the comics industry uses characters could have changed over time. 
 
 ```{r}
 lgbt_characters_overoneapp <- total_lgbt %>% 
@@ -186,6 +190,8 @@ marvellgbtcountalive = count(marvel_lgbt_alive)
 ```
 
 Question 5: What percentage of LGBT characters have neutral hair colors? 
+
+The idea behind asking this question was to find out if the comics industry was stereotyping LGBT characters with their hair colors. We deemed certain hairs (natural colors like black, brown, blonde etc) and separated them from non-neutral ones (blue, red, pink). We found that 69.58 percent of LGBT characters had neutral hair colors and that 55.02 percent of non-LGBT characters had neutral hair colors. Small sample size again comes into play here, but other than that there doesn't seem to be a particular explanation for why this is other than that the comics industry isn't perpetuating stereotypes.
 ```{r}
 
 neutral_hair_lgbt <- total_lgbt_hair %>%  
