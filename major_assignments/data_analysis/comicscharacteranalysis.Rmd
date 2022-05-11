@@ -118,15 +118,37 @@ total_nonlgbt_hair <- total_non_lgbt %>%
         
       )
   ) 
+
+total_character_hair <- total_characters %>% 
+  mutate(
+    neutral_hair_or_not = case_when(
+        hair == 'Black Hair' ~ "NEUTRAL",
+        hair == 'Blond Hair' ~ "NEUTRAL",
+        hair == 'Brown Hair' ~ "NEUTRAL",
+        hair == 'Auburn Hair' ~ "NEUTRAL", 
+        hair == 'Bald' ~ "NEUTRAL",
+        hair == 'Green Hair' ~ "Not",
+        hair == 'Blue Hair' ~ "Not",
+        hair == 'Gold Hair' ~ "Not", 
+        hair == 'Grey Hair' ~ "NEUTRAL",
+        hair == 'Orange Hair' ~ "Not",
+        hair == 'Pink Hair' ~ "Not",
+        hair == 'Platinum Blond Hair' ~ "NEUTRAL", 
+        hair == 'Purple Hair' ~ "Not",
+        hair == 'Red Hair' ~ "Not",
+        hair == 'Reddish Brown Hair' ~ "NEUTRAL",
+        hair == 'Silver Hair' ~ "Not", 
+        hair == 'Strawberry Blond Hair' ~ "NEUTRAL",
+        hair == 'Violet Hair' ~ "Not",
+        hair == 'White Hair' ~ "Not",
+        
+      )
+  ) 
 ```
 Question 1: What percentage of LGBT comic characters get more than 1 appearance and average appearances?
 
-LGBT characters - average 74.677 appearance and 92.85714 get above 1 appearance
-Non LGBT characters - average 18.626 appearances and 68.6305 get above 1 appearance.
-
 We wanted to see if LGBT characters were recurring characters or were just brought on for one-offs/minor roles. What we found was that over 92 percent of LGBT characters got over one appearance, compared to just over 68 percent for non-LGBT characters. We also found that LGBT characters averaged over 74 appearances compared to over 18 for non-LGBT characters. This means they were more likely to get more than one appearance that they averaged more appearances. Part of this can be attributed to small sample sizes, there are just 154 LGBT characters and 23118 non-LGBT characters. Many are also newer characters, meaning that the way the comics industry uses characters could have changed over time. 
-- LGBT characters filtered by pre 2000 and post 2000
-- test that by seeing if how average app and >1 app change before and after 2000
+
 ```{r}
 lgbt_characters_overoneapp <- total_lgbt %>% 
     filter(appearances > 1)
@@ -135,16 +157,22 @@ nonlgbt_total_characters_overoneapp <- total_non_lgbt %>%
 lgbt_over_one_app_percent <- (count(lgbt_characters_overoneapp)/count(total_lgbt))*100
 non_lgbt_over_one_app_percent <- (count(nonlgbt_total_characters_overoneapp)/count(total_non_lgbt))*100
 lgbt_app_mean <- mean(total_lgbt$appearances, na.rm = TRUE)
-nonlgbt_app_mean <- mean(total_non_lgbt$appearances, na.rm = TRUE)
-total_characters %>% 
-    filter(appearances > 1 & year > 2000) %>% 
-    summarise(count=n(), pct = count/) %>%
-    arrange(desc(count))
-total_characters %>% 
-    filter(appearances > 1 & year < 2000) %>% 
-    summarise(count=n()) %>%
-    arrange(desc(count))
+nonlgbt_app_mean <- mean(total_non_lgbt$appearances, na.rm = TRUE) 
+```
 
+The breakdown in comics by decade shows that most LGBT comics made their first appearance in the 2000s, followed by the 1980s and the 1990s. For non-LGBT characters, most came in the 1990s, followed by the 2000s and the 1980s. 
+```{r}
+total_lgbt_by_decade <- total_lgbt %>% 
+  mutate(decade = str_sub(year, start=1L, end=3L)) %>% 
+  group_by(decade) %>%
+  summarise(count=n()) %>% 
+  arrange(desc(count))
+
+total_non_lgbt_by_decade <- total_non_lgbt %>% 
+  mutate(decade = str_sub(year, start=1L, end=3L)) %>% 
+  group_by(decade) %>%
+  summarise(count=n()) %>% 
+  arrange(desc(count))
 ```
 
 Question 2: What's the alignment of LGBT comic characters? What percentage of LGBT characters are heroes compared to non-lgbt characters?
@@ -207,11 +235,10 @@ percent_nonlgbt_alive
 percent_lgbt_alive
 ```
 
-Question 5: What percentage of LGBT characters have neutral hair colors? 
+Question 5: What percentage of LGBT characters have neutral hair colors? What about hair color across gender?
 
-The idea behind asking this question was to find out if the comics industry was stereotyping LGBT characters with their hair colors. We deemed certain hairs (natural colors like black, brown, blonde etc) and separated them from non-neutral ones (blue, red, pink). We found that 69.58 percent of LGBT characters had neutral hair colors and that 55.02 percent of non-LGBT characters had neutral hair colors. Small sample size again comes into play here, but other than that there doesn't seem to be a particular explanation for why this is other than that the comics industry isn't perpetuating stereotypes.
-- how does this change for nonlgbt characters pre post 2000
-- how does the value change just across gender
+The idea behind asking this question was to find out if the comics industry was stereotyping LGBT characters with their hair colors. We deemed certain hairs (natural colors like black, brown, blonde etc) and separated them from non-neutral ones (blue, red, pink). We found that 69.48 percent of LGBT characters had neutral hair colors and that 55.02 percent of non-LGBT characters had neutral hair colors. Small sample size again comes into play here, but other than that there doesn't seem to be a particular explanation for why this is other than that the comics industry isn't perpetuating stereotypes.
+
 ```{r}
 neutral_hair_lgbt <- total_lgbt_hair %>%  
   filter(neutral_hair_or_not == "NEUTRAL")  
@@ -219,4 +246,44 @@ neutral_hair_lgbt_percentage <- (count(neutral_hair_lgbt)/count(total_lgbt_hair)
 neutral_hair_non_lgbt <- total_nonlgbt_hair %>% 
    filter(neutral_hair_or_not == "NEUTRAL")  
 neutral_hair_nonlgbt_percentage <- (count(neutral_hair_non_lgbt)/count(total_nonlgbt_hair))
+```
+The percentage of LGBT characters does change over time. The results show that 78.87 percent of LGBT characters were given neutral hair colors after 2000. That number is much higher than the 58.44 percent that shows up before 2000. This can largely be explained due to changing attitudes towards LGBT characters over time.
+```{r}
+neutral_hair_lgbt_post2k <- total_lgbt_hair %>%  
+  filter(neutral_hair_or_not == "NEUTRAL", year >= 2000) 
+lgbt_post_2k <-total_lgbt %>% 
+    filter(year >= 2000) 
+neutral_hair_lgbt_post2k_percentage <- (count(neutral_hair_lgbt_post2k)/count(lgbt_post_2k))
+
+neutral_hair_lgbt_pre2k <- total_lgbt_hair %>%  
+  filter(neutral_hair_or_not == "NEUTRAL", year < 2000)
+lgbt_pre_2k <- total_lgbt %>% 
+    filter(year < 2000) 
+neutral_hair_lgbt_pre2k_percentage <- (count(neutral_hair_lgbt_pre2k)/count(lgbt_pre_2k))
 ``` 
+Hair color also differs across gender. 64.08 percent of female characters have neutral hair colors while only 54.92 percent of male characters have neutral hair colors.The other categories of agender, genderless, genderfluid, and transgender characters have too small sample sizes to make any judgements about. 
+```{r}
+total_characters %>% 
+  group_by(sex) %>%
+  summarise(count=n()) %>% 
+  arrange(desc(count))
+
+neutral_hair_female <- total_character_hair %>%  
+  filter(neutral_hair_or_not == "NEUTRAL", sex == "Female Characters")  
+neutral_hair_female_percentage <- (count(neutral_hair_female)/5804)
+neutral_hair_male <- total_character_hair %>% 
+  filter(neutral_hair_or_not == "NEUTRAL", sex == "Male Characters")  
+neutral_hair_male_percentage <- (count(neutral_hair_male)/16421)
+neutral_hair_agender <- total_character_hair %>% 
+  filter(neutral_hair_or_not == "NEUTRAL", sex == "Agender Characters")  
+neutral_hair_agender_percentage <- (count(neutral_hair_agender)/45)
+neutral_hair_genderless <- total_character_hair %>% 
+  filter(neutral_hair_or_not == "NEUTRAL", sex == "Genderless Characters")  
+neutral_hair_genderless_percentage <- (count(neutral_hair_genderless)/20)
+neutral_hair_genderfluid <- total_character_hair %>% 
+  filter(neutral_hair_or_not == "NEUTRAL", sex == "Genderfluid Characters")  
+neutral_hair_genderfluid_percentage <- (count(neutral_hair_genderfluid)/2)
+neutral_hair_trans <- total_character_hair %>% 
+  filter(neutral_hair_or_not == "NEUTRAL", sex == "Transgender Characters")  
+neutral_hair_trans_percentage <- (count(neutral_hair_trans)/1)
+```
